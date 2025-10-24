@@ -2,6 +2,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { removeUser } from "../../utils/userSlice";
+import { api } from "../../../api";
 
 export const Header = () => {
   const user = useSelector((store) => store.user);
@@ -11,10 +12,9 @@ export const Header = () => {
 
   const handleLogout = async () => {
     try {
-      const { data } = await axios.post(
-        "http://localhost:3000/api/auth/signout",
-        {},
-        { withCredentials: true }
+      const { data } = await api.post(
+        "/auth/signout",
+        
       );
       dispatch(removeUser());
       return navigate("/login");

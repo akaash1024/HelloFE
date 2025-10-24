@@ -1,25 +1,21 @@
 import { useDispatch } from "react-redux";
 import { removeUserFromFeed } from "../utils/feedSlice";
 import axios from "axios";
+import { api } from "../../api";
 
 const UserCard = ({ user }) => {
-    const { _id, firstName, lastName, photoUrl, age, gender, about } = user;
-    const dispatch = useDispatch();
+  const { _id, firstName, lastName, photoUrl, age, gender, about } = user;
+  const dispatch = useDispatch();
 
-    const handleSendRequest = async (status, userId) => {
-      console.log(status, userId);
-      
-      try {
-        console.log(`reached here?`);
-        const res = await axios.post(
-          `http://localhost:3000/api/send/${status}/${userId}`,
-          {},
-          { withCredentials: true }
-        );
-        dispatch(removeUserFromFeed(userId));
-      } catch (err) {}
-    };
+  const handleSendRequest = async (status, userId) => {
+    console.log(status, userId);
 
+    try {
+      console.log(`reached here?`);
+      const res = await api.post(`/send/${status}/${userId}`);
+      dispatch(removeUserFromFeed(userId));
+    } catch (err) {}
+  };
 
   return (
     <div className="card bg-base-300 w-96 shadow-xl">

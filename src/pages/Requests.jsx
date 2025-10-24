@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useEffect, useState } from "react";
 import { addRequests, removeRequest } from "../utils/requestSlice";
+import { api } from "../../api";
 
 const Requests = () => {
   const requests = useSelector((store) => store.requests);
@@ -12,19 +13,15 @@ const Requests = () => {
 
   const reviewRequest = async (status, _id) => {
     try {
-      const res = axios.post(
-        `http://localhost:3000/api/review/${status}/${_id}`,
-        {},
-        { withCredentials: true }
-      );
+      const res = api.post(`/review/${status}/${_id}`);
       dispatch(removeRequest(_id));
     } catch (err) {}
   };
 
   const fetchRequests = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:3000/api/user/requests/received",
+      const res = await api.get(
+        "/user/requests/received",
         {
           withCredentials: true,
         }

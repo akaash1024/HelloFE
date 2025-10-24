@@ -3,22 +3,19 @@ import axios from "axios";
 import { useEffect } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { addConnections } from "../utils/connectionSlice";
-
+import { api } from "../../api";
 
 const Connections = () => {
   const connections = useSelector((store) => store.connections);
   const dispatch = useDispatch();
   const fetchConnections = async () => {
+    console.log(`reached.`);
+    
     try {
-      const res = await axios.get(
-        "http://localhost:3000/api/user/requests/connections",
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await api.get("/user/requests/connections");
 
       console.log(res);
-      
+
       dispatch(addConnections(res.data.data));
     } catch (err) {
       // Handle Error Case

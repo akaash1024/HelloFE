@@ -3,9 +3,10 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { useNavigate } from "react-router-dom";
+import { api } from "../../api";
 
 export const Login = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [loginForm, setLoginForm] = useState({
     emailId: "",
     password: "",
@@ -15,7 +16,7 @@ export const Login = () => {
 
   const handleChange = (e) => {
     console.log("yes");
-    
+
     const { name, value } = e.target;
     setLoginForm((prev) => ({ ...prev, [name]: value }));
   };
@@ -23,19 +24,12 @@ export const Login = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        "http://localhost:3000/api/auth/signin",
-        loginForm,
-        {
-          withCredentials: true,
-        }
-      );
+      const { data } = await api.post("/auth/signin", loginForm);
       dispatch(addUser(data));
-      navigate("/")
-      
+      navigate("/");
     } catch (err) {
       console.log(err);
-      
+
       setError(err?.response?.data?.message || "Something went wrong");
     }
   };
